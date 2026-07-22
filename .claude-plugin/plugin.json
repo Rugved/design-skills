@@ -1,0 +1,8 @@
+{
+  "name": "design-skills",
+  "description": "Ved's personal design system and UI/dashboard design conventions for Claude Code.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Ved"
+  }
+}
