@@ -1,27 +1,44 @@
 # Flat utilitarian UI — design reference
 
-Portable style guide for **dashboards, admin panels, and internal tools**. Use on any greenfield project when building UI under time pressure.
+Portable **visual style** for any web UI — dashboard, form, landing page, checkout, settings, mobile web, etc.
 
-**How to use (interview or new project):** paste this in Cursor / Claude:
+**Layout is not prescribed here.** Structure comes from tomorrow's brief. This doc only fixes how things *look*: color, type, borders, spacing, components.
 
-> Follow the design system in https://github.com/Rugved/design-skills — README only. Flat ops dashboard. No shadows, no nested cards.
+**How to use:** paste in Cursor / Claude:
 
-Or attach this file / `@README` if the repo is open.
+> Follow https://github.com/Rugved/design-skills README for **visual style only**. Match layout to the brief. Flat UI — no shadows, no nested cards.
+
+Or `@README` if the repo is open.
 
 ---
 
-## Hard rules (always)
+## What always applies (any project type)
 
 These override default component library styling (shadcn, Material, etc.).
 
 - **No box shadows** on panels, cards, or buttons.
-- **No card-in-card** — one white surface per section; depth = border + spacing only.
-- **No gradients**, glassmorphism, or decorative hero backgrounds.
+- **No card-in-card** — one white surface per section; depth = **border + spacing only**.
+- **No gradients**, glassmorphism, or decorative backgrounds (unless the brief explicitly asks for marketing flair — then keep it subtle).
 - **No nested elevated cards** inside panels.
-- **Lists = rows** with `border-bottom` dividers, not separate floating cards per item.
-- **Facts = label/value pairs** (`dl` / grid), not inset mini-tiles or metric boxes inside rows.
-- **Two primary actions** per row or panel; everything else in a `⋯` overflow menu.
-- **Queue / priority list is the hero**; map, timeline, or preview is secondary context.
+- **Separation = `1px #EAEAEA` borders and whitespace**, not elevation.
+- **Lists** → rows with `border-bottom` dividers inside one panel, not a floating card per item.
+- **Grouped facts** → label/value pairs (`dl` grid or stacked label + value), not inset mini-tile cards.
+
+---
+
+## What does NOT always apply
+
+Read the brief first. **Do not force a dashboard layout** if the project isn't one.
+
+| If the brief is… | Layout comes from the brief, not this doc |
+|------------------|-------------------------------------------|
+| Marketing / landing | Hero + sections, single column, or split hero — not a stat strip + queue |
+| Form / wizard / settings | Single column, stepped sections, sidebar nav |
+| E-commerce / checkout | Product grid, cart, step flow |
+| Social / feed | Timeline or card feed (still flat — no shadows) |
+| Dashboard / ops / admin | See optional pattern at bottom |
+
+**Rule:** derive IA from the user problem. Apply this doc's **tokens and surfaces** to whatever structure you choose.
 
 ---
 
@@ -43,7 +60,7 @@ Never use pure `#000000` for body text.
 |------|-----|
 | Page background | `#F7F6F3` (warm bone) |
 | Panel / card | `#FFFFFF` |
-| Muted fill (selected row, secondary bg) | `#F3F3F1` |
+| Muted fill (hover, selected, secondary bg) | `#F3F3F1` |
 | Border / divider | `#EAEAEA` |
 
 ### Accent & semantic (light)
@@ -55,11 +72,11 @@ Never use pure `#000000` for body text.
 | Warning badge bg / text | `#FBF3DB` / `#956400` |
 | Critical badge bg / text | `#FDEBEC` / `#9F2F2D` |
 
-Keep **accent** (brand/action) separate from **semantic** (state). Do not use the same hue for both.
+Keep **accent** (brand/action) separate from **semantic** (state).
 
 ### Dark theme
 
-Provide `:root` light tokens + `.dark` overrides. Do not naively invert — pick dark equivalents with the same contrast relationships. Example accent in dark: `#E86B4A`.
+Provide `:root` light tokens + `.dark` overrides. Do not naively invert. Example dark accent: `#E86B4A`.
 
 ---
 
@@ -69,18 +86,18 @@ Provide `:root` light tokens + `.dark` overrides. Do not naively invert — pick
 
 **Letter-spacing:** `-0.15px` on `html` or `body`, inherited everywhere.
 
-**Weights:** 400 body, 500 emphasis (headers, stats, active nav). No bolder weights — hierarchy from size and color.
+**Weights:** 400 body, 500 emphasis. No bolder weights — hierarchy from size and color.
 
 **Closed scale — only these sizes:**
 
-| Class / use | Size | Line height |
-|-------------|------|-------------|
-| Caption, labels, table meta | 12px | 1.4 |
-| Body, table cells | 13px | 1.45 |
-| Section / panel headers | 14px | 1.4 |
-| Page title, hero stat | 24px | 1.2 |
+| Use | Size | Line height |
+|-----|------|-------------|
+| Caption, labels, meta | 12px | 1.4 |
+| Body, inputs, table cells | 13px | 1.45 |
+| Section headers, nav | 14px | 1.4 |
+| Page title, key number | 24px | 1.2 |
 
-**Numbers in columns or live-updating stats:** `font-variant-numeric: tabular-nums`
+**Live or columnar numbers:** `font-variant-numeric: tabular-nums`
 
 ---
 
@@ -88,41 +105,25 @@ Provide `:root` light tokens + `.dark` overrides. Do not naively invert — pick
 
 | Element | Radius |
 |---------|--------|
-| Nav items, small inputs | 8px |
-| Panels, cards, tables | 12px |
-| Pills, badges, primary CTAs | 999px (full pill) |
+| Nav items, inputs, small controls | 8px |
+| Panels, sections, modals | 12px |
+| Pills, badges, primary CTAs | 999px |
 
 ---
 
 ## Icons
 
-- **14px** — navigation, inline affordances
-- **20px** — panel headers, stat areas
-- Stroke icons, consistent weight (~1.6px). Lucide is fine for speed.
+- **14px** — nav, inline affordances
+- **20px** — section headers, feature icons
+- Stroke icons, ~1.6px weight. Lucide is fine for speed.
 
 ---
 
-## Layout pattern (ops dashboard)
+## Components (visual style — any layout)
 
-```
-┌ Header — title, time/context, optional theme toggle ─────────────┐
-├ Stat strip — 3–4 KPIs in ONE flat panel, vertical dividers ──────┤
-├ Priority queue (hero) ────┬ Context + detail (map / timeline) ─┤
-├ Full-width table or grid (all items) ────────────────────────────┤
-└──────────────────────────────────────────────────────────────────┘
-```
+### Flat panel
 
-- Stat strip: single `.flat-panel` with `divide-x`, not separate cards per metric.
-- Queue items: full-width rows inside one panel.
-- Selected row: subtle `bg-muted/40`, not a new elevated card.
-
----
-
-## Components
-
-### Flat panel (base primitive)
-
-Every major section uses this — border only, no shadow:
+Base primitive for any grouped content:
 
 ```css
 .flat-panel {
@@ -132,34 +133,38 @@ Every major section uses this — border only, no shadow:
 }
 ```
 
-Page background stays `#F7F6F3`; panels sit on top as white modules.
+Page background `#F7F6F3`; content sits in white bordered modules.
 
-### Queue row
+### List row (when the UI has a list)
 
 - `border-b border-[#eaeaea] last:border-b-0`
-- Title line: `13px medium #292929`
-- Meta line: `12px #5D5D5D`
-- Badge top-right: muted pastel pill (see semantic colors)
-- Below: 2×4 `dl` grid of facts (Window, Status, Customer, Last signal — adapt labels to domain)
+- Title: `13px medium #292929`
+- Meta: `12px #5D5D5D`
+- Optional badge: muted pastel pill (semantic colors above)
+
+### Form fields
+
+- Labels: `12px #5D5D5D`
+- Inputs: `13px`, `8px` radius, `1px #EAEAEA` border, white bg
+- Group fields in one `.flat-panel` with internal spacing — not one card per field
 
 ### Buttons
 
-- Primary: solid accent (`#16A34A`), white text, pill radius, **no shadow**
+- Primary: `#16A34A`, white text, pill radius, **no shadow**
 - Secondary: outline or ghost on `#F3F3F1`
-- Destructive actions only in overflow menu unless truly primary
+- Limit visible primary CTAs per screen — don't pepper green buttons everywhere
 
 ### Badges / status
 
-- Small pill, uppercase optional, wide tracking
-- Background = muted pastel; text = darker semantic hue
-- Never bright saturated fills on large areas
+- Small pill, muted pastel background, darker text
+- Never large saturated fills
 
-### Tables
+### Tables (when the UI has a table)
 
-- Header row: `12px #9E9E9E`, uppercase or medium weight
-- Cells: `13px`, tabular nums for numbers
-- Row hover: `#F3F3F1`, not shadow
-- Outer wrapper: `.flat-panel overflow-hidden`
+- Header: `12px #9E9E9E`
+- Cells: `13px`, tabular nums
+- Row hover: `#F3F3F1`
+- Wrapper: `.flat-panel overflow-hidden`
 
 ---
 
@@ -195,31 +200,54 @@ body {
 
 ---
 
-## What NOT to do (common AI slop)
+## What NOT to do
 
 - Inter / Roboto as unconsidered default
 - Purple-blue gradients, heavy shadows, glass cards
-- Card-in-card metric tiles
-- Marketing-page motion (scroll reveals, bento heroes) on tool UI
+- Card-in-card nesting
+- Forcing a dashboard template on a non-dashboard brief
 - Emoji as section markers
 - Generic copy: "Elevate", "Seamless", "Next-Gen"
 - Placeholder names: "John Doe", "Acme Corp"
 
 ---
 
-## Agent checklist (before shipping UI)
+## Visual checklist (any project)
 
-1. Page bg bone, panels white, borders `#EAEAEA` only
-2. Zero shadows on custom layout (override library defaults if needed)
-3. Type scale stuck to 12 / 13 / 14 / 24
-4. Priority list readable in <10 seconds — ranked, with reason visible
-5. Two primary actions; rest in `⋯`
-6. At least 3 seeded rows with realistic names and distinct states
+1. Bone page bg, white panels, `#EAEAEA` borders only
+2. Zero shadows on layout (override library defaults if needed)
+3. Type scale: 12 / 13 / 14 / 24 only
+4. Layout matches the brief — not a default dashboard
+5. Realistic seeded content, not lorem ipsum
 
 ---
 
-## One-line Cursor prompt
+## Optional: ops / triage dashboard layout
+
+**Use only if the brief is an action dashboard** (dispatch, support queue, admin monitor, etc.). Skip entirely otherwise.
 
 ```
-Build [FEATURE]. Follow github.com/Rugved/design-skills README: flat utilitarian dashboard, warm bone bg, white bordered panels, no shadows, no nested cards, row-based queue, 12/13/14/24px type, green accent, muted pastel badges.
+┌ Header — title, context ─────────────────────────────────────────┐
+├ Stat strip — KPIs in ONE flat panel, vertical dividers ──────────┤
+├ Priority list (hero) ─────┬ Detail / context panel ──────────────┤
+├ Full-width table or grid ────────────────────────────────────────┤
+└──────────────────────────────────────────────────────────────────┘
+```
+
+- Priority list = ranked rows in one panel
+- Selected row = `bg-muted/40`, not a new elevated card
+- Detail panel labels adapt to domain (not hardcoded to dispatch)
+
+---
+
+## Cursor prompts
+
+**Any project (default):**
+```
+Build [FEATURE]. Follow github.com/Rugved/design-skills README for visual style only — warm bone bg, white bordered panels, no shadows, no nested cards, 12/13/14/24px type, green accent. Layout must match this brief: [describe IA].
+```
+
+**Only if brief is an ops dashboard:**
+```
+… Also use the optional triage dashboard layout section in that README.
 ```
